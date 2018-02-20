@@ -1,0 +1,39 @@
+me = 'dolapo_new'
+
+def credentials = '123456789'
+
+def env_info = [
+     node 1
+     node 2
+    ]
+
+job("${viewName}-Deployment-Requirement-Check") {
+  description("This job performs consolidation requirement.  This job is not intended to be run seprately from the deployment flow jobs.")
+  parameters{
+
+wrappers {
+    timestamp ()
+    builduserVars
+    buildName ($Dolapo)
+    label Dolapo-Deploy-Node
+
+steps
+ shell (readfilefromworkspace("resources/dolapoapache")
+
+publishers
+        { 
+            extendedEmail {
+                recipientlist ('$BUILD_USERS')
+                contenttype ('text_html")
+                triggers {
+                   success {
+                   recipient-list (#dgbodimowo@gmail.com)
+                   contentType ('textPlain')
+                   content (''' 
+
+Dolapo you have been very successful in building this script
+
+Find full details below:
+
+$BUILD_LOG
+
