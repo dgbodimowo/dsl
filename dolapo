@@ -1,4 +1,4 @@
-me = 'dolapo_new'
+def viewName = 'dolapo_new'
 
 def credentials = '123456789'
 
