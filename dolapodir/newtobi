@@ -1,0 +1,104 @@
+#To initialize a new repositiory
+git init
+
+Download oracle java
+wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u131-b11/d54c1d3a095b4ff2b6607d096fa80163/jdk-8u131-linux-x64.rpm
+
+## To add global configs for name and email
+git config --global user.name ' Ade Gbodimowo'
+git config --global user.email 'agbodimowo@gmail.com'
+
+## To verify settings
+git config --list
+
+## Create repository from command line
+curl -u 'agbodimowo@gmail.com' https://api.github.com/user/repos -d '{"name":"tower","private":"true"}'
+git clone https://github.com/agbodi/tower.git
+## To push existing directory to newly created repo
+git add -A <directory> && git commit -m 'add new repo' && git remote add origin https://github.com/agbodi/tower && git push origin master
+
+## To start tracking a local working directory in git
+git init ### From the working directory
+git add ade.txt ## To add one file at a time
+git add -A ## To add all files and directories
+git status ## To see the status of files added
+git reset ade.txt ## To remove all files being tracked from staging
+git reset ## To remove all files tracked from staging
+
+## To clone an existing repository
+git clone https://github.com/agbodi/testrepo.git
+
+## To see difference in code change made after last commit
+git diff
+git status
+
+## Command to clone repo after adding ssh keys to git
+ssh-add -l ## to ensure keys are loaded/forwarded
+git clone git@github.com:agbodi/gao_playbooks.git OR
+git clone https://github.com/agbodi/gao_playbooks.git
+
+## To push new changes to a repository
+git add new_file.txt
+git pull origin master
+git commit -m 'commit message'
+git push origin master
+
+## To create a branch of master repository( make sure u in master directory)
+git branch work_branch
+git status
+
+## To switch to newly created branch
+git checkout work_branch ### From master directory
+git branch -a ## To see the current working branch
+
+## To commit changes to newly created branch
+git add -A
+git commit -m 'Change to new branch'
+git push -u origin work_branch
+git status
+
+## To merge work_branch with master branch
+git checkout master ## To switch back to master branch
+git pull master ## To make sure all changes are on local working copy
+git merge workbranch
+git push origin master
+
+
+## To delete work branch
+git branch -d work_branch ## To delete from working directory
+git push origin --delete work_branch ## To delete from remote repository
+
+## To revert or rollback changes made to a file
+git diff ade.txt ## To see changes made
+git checkout ade.txt ## To revert changes to last push
+git diff
+
+## To amend a commit message after commit
+git log ## To see commit message
+git commit --amend -m 'New commit message'
+git commit --amend ## To add a new file to a previous commit"
+git log ## To see new commit message
+
+
+## To fix an issue where commit was made to master branch instead of second_branch
+git log ## To view and copy the commit hash with the error
+git checkout second_branch ## To switch to correct branch
+git cherry-pick <commit-hash> ## To copy commit from master branch
+git checkout master ## To switch back to master Hash MUST be the one directly below hash to be deleted
+git reset --soft <commit-hash> ## To reset and keep changes in staging directory
+git reset <commit-hash> ## To reset and keep changes in working directory
+git reset --hard <commit-hash> To reset and get rid of all changes
+git status
+git clean -df ## To clean untracked directory and files
+
+
+## To tag a master branch
+git checkout master
+git tag -a Release_1.0 -m 'First Master Release' ## To create new tag
+git tag ## To view all tags
+git push origin --tags ## To commit all tags to remote repository
+
+
+## To checkout a tag
+git checkout -b branch_tag1 Release_1.0 ## This creates a new branch with tags
+

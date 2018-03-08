@@ -1,0 +1,65 @@
+def env_list = ['SKY','SKY2', 'DM','EUT','PP','PR','PE','TRN','TRN2','PT','FODT','FT','DEMOLBS','DEMOLIVE','DEMOUSCIS','DEMOSITH','DEMOMOCK']
+
+job("ELIS-EncryptDecryptValue") {
+	authorization {
+		permissionAll('yazaz')
+		permissionAll('cfmagee')
+		permissionAll('aanand')
+		permissionAll('cpmccart')
+		permissionAll('scshelto')
+		permissionAll('jsjohnso')
+		permissionAll('rvangar')
+		permissionAll('srkombam')
+		permissionAll('wmfowlke')
+        permissionAll('dogbodim')
+        permissionAll('cldana')
+        permissionAll('hadams')
+        permissionAll('rjcook')
+        permissionAll('mday')
+        permissionAll('jonc')
+        blocksInheritance()
+        
+    }
+        
+	parameters {
+		stringParam('PropertyValue', '', 'Value to be encrypted or decrypted')
+		booleanParam('Decrypt', false, 'Check this box if the value needs to be decrypted')
+		choiceParam('env_Name', env_list, 'ELIS Environment')
+	}
+	
+	scm {
+		git {
+			remote {
+				name('origin')
+				url ("git@git.uscis.dhs.gov:USCIS/scripts.git")
+				branch('*/master')
+				credentials('12ac5999-aee0-4221-9e7e-3b96db1242de')
+			}
+		}
+	}
+
+	steps {
+		shell(readFileFromWorkspace("resources/propertyupdate/getPBEKeys.sh"))
+		systemGroovyCommand(readFileFromWorkspace('resources/propertyupdate/gradleEncryptDecrypt.groovy'))
+	}
+
+	publishers {
+		wsCleanup()
+	}
+	
+	wrappers {
+		timestamps()
+		buildUserVars()
+		preBuildCleanup()
+	      credentialsBinding {
+			file('PR_PBE_FILE','15be17b3-24cb-4eba-9aaf-2c99083f51ed')
+			file('DM_PBE_FILE','b5d2a0d9-0b7f-455c-9b17-d6d75ea2bf39')
+			file('PP_PBE_FILE','2fe4f514-9cde-4f0d-8263-4b30bd8cdd4f')
+			file('PE_PBE_FILE','64656ad1-d2f5-433a-a7e3-d02c491459ce')
+			file('FODT_PBE_FILE','b5d2a0d9-0b7f-455c-9b17-d6d75ea2bf39')
+			file('NON_PROD_PBE_FILE','a96c9f81-c2f3-43d0-935b-189edb07dd0d')
+			file('FT_PBE_FILE','fba11bba-b672-4053-9bad-45011f627f15')
+	      }
+	}
+}
+    

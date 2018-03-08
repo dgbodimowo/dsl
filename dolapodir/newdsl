@@ -1,0 +1,66 @@
+def viewName = 'ELIS-TOGGLE'
+
+def credentials = '123456789'
+
+def env_info = [
+     def elis_envs = ['DM', 'EUT', 'FODT', 'PE', 'PP', 'PT', 'SKY', 'SKY2', 'TRN', 'TRN2']
+     ]
+def toggle_ids = [
+	AKEY: 'PR_AWS_Access_Key_Restart',
+	SKEY: 'PR_AWS_Secret_Access_Key_Restart'
+    ]
+    
+def default_description = "ELIS-TOGGLE -- DO NOT MODIFY IN JENKINS. YOUR CHANGES WILL BE LOST\n\n"
+def githubUrl = 'git.uscis.dhs.gov'
+def githubToken = '12ac5999-aee0-4221-9e7e-3b96db1242de'
+def gitCreds = '12ac5999-aee0-4221-9e7e-3b96db1242de'   
+
+def db = [ 'grep', "^databaseServer=", "gradle.properties", "|", "cut -f2 -d'='"]
+def dbport = [ 'grep', "^databasePort=", "gradle.properties", "|", "cut -f2 -d'='" ]
+    
+    elis_envs.each { env ->
+     if (['DM', 'EUT', 'FODT', 'PE', 'PP', 'PT', 'SKY', 'SKY2', 'TRN', 'TRN2' ].contains(env)) {
+    // Stop/Start script that will execute toggle code to stop and start RDS
+    // instances for each env
+    job ("${env} ELIS-TOGGLE"){
+      description("${default_description} DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=${db})(PORT=${dbport}))(CONNECT_DATA=(SID=ELIS2)")
+      description("${default_description} Script to stop or start the RDS instances for ${env} Environment")
+
+
+job("${viewName}-ELIS-TOGGLE") {
+  description("This job performs consolidation of all Toggle jobs.")
+ 
+
+  wrappers {
+    timestamps()
+    buildUserVars()
+    buildName('#${ELIS-TOGGLE"}')
+    label 'ELIS-TOGGLE'
+  }
+      steps {
+    environmentVariables {
+    envs(ENVIRONMENT: "${env}")
+    shell(readFileFromWorkspace("resources/toggle_jobs.sh"))
+  } 
+
+  /*publishers
+        { 
+            extendedEmail {
+                recipientList('$BUILD_USERS')
+                contentType('text/html')
+                triggers {
+                   success {
+                   // recipientlist('#dgbodimowo@gmail.com')
+                   contentType('text/plain')
+                   subject('Test_deploy')
+                   content(''' 
+
+Your friendly Jenkins Server''')*/
+                   }
+                }
+            }
+        }
+   
+    }
+
+zsh:1: command not found: indent

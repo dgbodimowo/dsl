@@ -1,0 +1,44 @@
+def viewName = 'Dolapo-Jobs'
+
+def credentials = '123456789'
+
+def env_info = [
+     SKY: [recipients: "#dgbodimowo@gmail.com", fail_recipients: "#ELIS2-SKynet@uscis.dhs.gov", room: "#elis-sky", gitrepo: '${AWSSKY_GIT_REPO}'],
+    ]
+def auto_deploy_envs = ["SKY"]
+
+job("${viewName}-Deployment-Requirement-Check") {
+  description("This job performs consolidation requirement.  This job is not intended to be run seprately from the deployment flow jobs.")
+  parameters{
+
+  wrappers {
+    timestamps()
+    buildUserVars()
+    buildName('#${DOLAPO_BUILD_NUMBER}')
+    label 'Dolapo-Deploy-Node'
+  }
+    /*  steps {
+    shell(readFileFromWorkspace("resources/dolapo_Verify.sh"))
+  } */
+
+  publishers
+        { 
+            extendedEmail {
+                recipientList('$BUILD_USERS')
+                contentType('text/html')
+                triggers {
+                   success {
+                   // recipientlist('#dgbodimowo@gmail.com')
+                   contentType('text/plain')
+                   subject('Test_deploy')
+                   content(''' 
+
+Your friendly Jenkins Server''')
+                   }
+                }
+            }
+        }
+  }
+}
+
+ 
